@@ -18,8 +18,8 @@ namespace Ambev.DeveloperEvaluation.Domain.Validation
 
             RuleFor(customer => customer.Name)
                 .NotEmpty()
-                .MinimumLength(3).WithMessage("Username must be at least 3 characters long.")
-                .MaximumLength(300).WithMessage("Username cannot be longer than 300 characters.");
+                .MinimumLength(3).WithMessage("Name must be at least 3 characters long.")
+                .MaximumLength(300).WithMessage("Name cannot be longer than 300 characters.");
 
 
             RuleFor(customer => customer.Phone)
