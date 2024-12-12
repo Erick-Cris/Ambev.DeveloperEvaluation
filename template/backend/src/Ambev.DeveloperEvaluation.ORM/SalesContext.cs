@@ -6,14 +6,11 @@ using System.Reflection;
 
 namespace Ambev.DeveloperEvaluation.ORM;
 
-public class DefaultContext : DbContext
+public class SalesContext : DbContext
 {
-    public DbSet<User> Users { get; set; }
-    public DbSet<Customer> Customers { get; set; }
-    public DbSet<Product> Products { get; set; }
-    public DbSet<Branch> Branchs { get; set; }
+    public DbSet<Sale> Sales { get; set; }
 
-    public DefaultContext(DbContextOptions<DefaultContext> options) : base(options)
+    public SalesContext(DbContextOptions<SalesContext> options) : base(options)
     {
     }
 
@@ -22,24 +19,26 @@ public class DefaultContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
     }
+
+
 }
-public class YourDbContextFactory : IDesignTimeDbContextFactory<DefaultContext>
+public class SalesDbContextFactory : IDesignTimeDbContextFactory<SalesContext>
 {
-    public DefaultContext CreateDbContext(string[] args)
+    public SalesContext CreateDbContext(string[] args)
     {
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json")
             .Build();
 
-        var builder = new DbContextOptionsBuilder<DefaultContext>();
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var builder = new DbContextOptionsBuilder<SalesContext>();
+        var connectionString = configuration.GetConnectionString("SalesConnection");
 
         builder.UseNpgsql(
                connectionString,
                b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")
         );
 
-        return new DefaultContext(builder.Options);
+        return new SalesContext(builder.Options);
     }
 }

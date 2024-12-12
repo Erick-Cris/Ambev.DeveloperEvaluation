@@ -1,21 +1,22 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
-using Ambev.DeveloperEvaluation.Domain.Common;
-using Ambev.DeveloperEvaluation.Domain.Enums;
-using Ambev.DeveloperEvaluation.Domain.Validation;
+﻿using Ambev.DeveloperEvaluation.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Domain.Entities
+namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale
 {
     /// <summary>
-    /// Represents a Sale in thebusiness rule.
-    /// This entity follows domain-driven design principles and includes business rules validation.
+    /// Response model for GetSale operation
     /// </summary>
-    public class Sale : BaseEntity
+    public class GetSaleResult
     {
+        /// <summary>
+        /// The unique identifier of the sale
+        /// </summary>
+        public Guid Id { get; set; }
+
         /// <summary>
         /// Gets the sale's  customer id.
         /// Must not be null or empty.
@@ -67,40 +68,5 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// Gets the date and time of the last update to the sale's information.
         /// </summary>
         public DateTime? UpdatedAt { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the Sale class.
-        /// </summary>
-
-        public Sale()
-        {
-            CreatedAt = DateTime.UtcNow;
-        }
-
-        /// <summary>
-        /// Performs validation of the user entity using the UserValidator rules.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="ValidationResultDetail"/> containing:
-        /// - IsValid: Indicates whether all validation rules passed
-        /// - Errors: Collection of validation errors if any rules failed
-        /// </returns>
-        /// <remarks>
-        /// <listheader>The validation includes checking:</listheader>
-        /// <list type="bullet">CustomerName value and length</list>
-        /// <list type="bullet">CustomerDocument format and length</list>
-        /// <list type="bullet">BranchName format and length</list>
-        /// 
-        /// </remarks>
-        public ValidationResultDetail Validate()
-        {
-            var validator = new SaleValidator();
-            var result = validator.Validate(this);
-            return new ValidationResultDetail
-            {
-                IsValid = result.IsValid,
-                Errors = result.Errors.Select(o => (ValidationErrorDetail)o)
-            };
-        }
     }
 }
