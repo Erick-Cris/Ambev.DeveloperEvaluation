@@ -1,5 +1,6 @@
 ﻿
 using Ambev.DeveloperEvaluation.Common.Validation;
+using Ambev.DeveloperEvaluation.Domain.DTOs.SaleProduct;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using MediatR;
 
@@ -78,16 +79,6 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
         }
 
 
-    }
-
-    public class CreateSaleProductDto
-    {
-        public Guid ProductExternalId { get; set; }
-        public string ProductName { get; set; }
-        public string ProductDescription { get; set; }
-        public uint Quantity { get; set; }
-        public decimal ProductPrice { get; set; }
-        public decimal Discount { get; set; }
     }
 }
 

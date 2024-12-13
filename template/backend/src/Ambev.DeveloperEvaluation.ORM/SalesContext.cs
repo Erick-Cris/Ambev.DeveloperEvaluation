@@ -20,10 +20,7 @@ public class SalesContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
 
-        modelBuilder.Entity<SaleProduct>()
-            .HasOne(sp => sp.Sale)
-            .WithMany(s => s.SaleProducts)
-            .HasForeignKey(sp => sp.SaleId);
+        modelBuilder.Entity<SaleProduct>().HasOne<Sale>().WithMany().HasForeignKey(sp => sp.SaleId);
 
 
         base.OnModelCreating(modelBuilder);

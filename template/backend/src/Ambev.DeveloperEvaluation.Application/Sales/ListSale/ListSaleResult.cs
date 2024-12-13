@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Domain.DTOs.SaleProduct;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -61,18 +62,14 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale
         public SaleStatus Status { get; set; }
 
         /// <summary>
+        /// Gets the sale's creation date.
+        /// Must not be null and could contain sale's status.
+        /// </summary>
+        public DateTime CreatedAt { get; set; }
+
+        /// <summary>
         /// Gets or sets the collection of SaleProducts associated with the sale.
         /// </summary>
         public List<ListSaleProductResponse> SaleProducts { get; set; } = new List<ListSaleProductResponse>();
-    }
-
-    public class ListSaleProductResponse//Erick - Tirar isso daqui depois
-    {
-        public Guid ProductExternalId { get; set; }
-        public string ProductName { get; set; }
-        public string ProductDescription { get; set; }
-        public uint Quantity { get; set; }
-        public decimal ProductPrice { get; set; }
-        public decimal Discount { get; set; }
     }
 }

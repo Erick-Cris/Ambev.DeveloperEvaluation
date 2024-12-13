@@ -36,6 +36,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>A list of saleProducts that match the filters</returns>
         Task<List<SaleProduct>> ListAsync(
+            Guid? saleId, 
             Guid? productExternalId, 
             string productName, 
             string productDescription, 

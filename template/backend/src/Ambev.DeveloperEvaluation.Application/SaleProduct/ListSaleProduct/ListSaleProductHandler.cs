@@ -48,6 +48,7 @@ namespace Ambev.DeveloperEvaluation.Application.SaleProducts.ListSaleProduct
                 throw new ValidationException(validationResult.Errors);
 
             var saleProducts = await _saleProductRepository.ListAsync(
+                request.SaleId, 
                 request.ProductExternalId, 
                 request.ProductName, 
                 request.ProductDescription, 

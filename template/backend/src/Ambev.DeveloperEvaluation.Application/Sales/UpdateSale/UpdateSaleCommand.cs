@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 using Ambev.DeveloperEvaluation.Common.Validation;
+using Ambev.DeveloperEvaluation.Domain.DTOs.SaleProduct;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using MediatR;
 
@@ -69,6 +70,8 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
         /// Must not be null and could contain sale's status.
         /// </summary>
         public SaleStatus Status { get; set; }
+
+        public List<UpdateSaleProductDto> SaleProducts { get; set; }
 
 
 

@@ -13,6 +13,7 @@ public class ListSaleProfile : SaleProfile
     public ListSaleProfile()
     {
         CreateMap<ListSaleRequest, Application.Sales.ListSale.ListSaleCommand>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.CustomerExternalId, opt => opt.MapFrom(src => src.CustomerExternalId))
             .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => src.CustomerName))
             .ForMember(dest => dest.CustomerDocument, opt => opt.MapFrom(src => src.CustomerDocument))

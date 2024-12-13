@@ -57,7 +57,9 @@ public class SaleProductRepository : ISaleProductRepository
     /// <param name="price">The price of the saleProduct</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A list of saleProducts that match the filters</returns>
-    public async Task<List<SaleProduct>> ListAsync(Guid? productExternalId, 
+    public async Task<List<SaleProduct>> ListAsync(
+        Guid? saleId, 
+        Guid? productExternalId, 
         string productName, 
         string productDescription, 
         decimal?  productPrice, 
@@ -66,6 +68,16 @@ public class SaleProductRepository : ISaleProductRepository
         CancellationToken cancellationToken = default)
     {
         var query = _context.SaleProducts.AsQueryable();
+
+        if(saleId.HasValue)
+        {
+            query = query.Where(p => p.SaleId == saleId);
+        }
+
+        if (productExternalId.HasValue)
+        {
+            query = query.Where(p => p.ProductExternalId == productExternalId);
+        }
 
         if (!string.IsNullOrEmpty(productName))
         {

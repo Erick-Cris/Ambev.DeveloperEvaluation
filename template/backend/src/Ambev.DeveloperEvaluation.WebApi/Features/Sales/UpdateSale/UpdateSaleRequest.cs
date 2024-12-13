@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+﻿using Ambev.DeveloperEvaluation.Domain.DTOs.SaleProduct;
+using Ambev.DeveloperEvaluation.Domain.Enums;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.UpdateSale;
 
@@ -49,5 +50,5 @@ public class UpdateSaleRequest
     /// </summary>
     public SaleStatus Status { get; set; }
 
-
+    public List<UpdateSaleProductDto> SaleProducts { get; set; }
 }

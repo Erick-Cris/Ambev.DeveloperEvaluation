@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Enums;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
 
@@ -58,4 +59,11 @@ public class GetSaleResponse
     /// Gets the date and time when the sale was created.
     /// </summary>
     public DateTime CreatedAt { get; set; }
+
+    /// <summary>
+    /// Gets the date and time of the last update to the sale's information.
+    /// </summary>
+    public DateTime? UpdatedAt { get; set; }
+
+    public List<SaleProduct> SaleProducts { get; set; }
 }

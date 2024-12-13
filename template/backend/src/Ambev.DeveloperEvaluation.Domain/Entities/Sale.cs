@@ -53,10 +53,6 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// </summary>
         public SaleStatus Status { get; set; }
 
-        /// <summary>
-        /// Gets or sets the collection of SaleProducts associated with the sale.
-        /// </summary>
-        public ICollection<SaleProduct> SaleProducts { get; set; } = new List<SaleProduct>();
 
         /// <summary>
         /// Gets the date and time when the sale was created.

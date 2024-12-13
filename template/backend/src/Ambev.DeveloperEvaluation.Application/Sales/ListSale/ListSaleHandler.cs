@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.SaleProducts.ListSaleProduct;
+using Ambev.DeveloperEvaluation.Domain.DTOs.SaleProduct;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
@@ -51,6 +52,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale
                 throw new ValidationException(validationResult.Errors);
 
             var sales = await _saleRepository.ListAsync(
+                request.Id,
                 request.CustomerExternalId,
                 request.CustomerName,
                 request.CustomerDocument,
@@ -66,6 +68,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale
             foreach (var saleResult in saleResults)
             {
                 var saleProducts = await _saleProductRepository.ListAsync(
+                saleResult.Id,
                 null,
                 null,
                 null,
@@ -74,7 +77,6 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale
                 null,
                 cancellationToken);
 
-                saleProducts = saleProducts.Where(x => x.SaleId == saleResult.Id).ToList();
                 saleResult.SaleProducts = _mapper.Map<List<ListSaleProductResponse>>(saleProducts); ;
             }
 

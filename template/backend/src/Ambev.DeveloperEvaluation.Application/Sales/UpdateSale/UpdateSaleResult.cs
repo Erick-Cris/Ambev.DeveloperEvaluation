@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+﻿using Ambev.DeveloperEvaluation.Domain.DTOs.SaleProduct;
+using Ambev.DeveloperEvaluation.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,5 +64,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
         /// Must not be null and could contain sale's status.
         /// </summary>
         public SaleStatus Status { get; set; }
+
+        public List<UpdateSaleProductDto> SaleProducts { get; set; }
     }
 }

@@ -17,8 +17,6 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// </summary>
         public Guid SaleId { get; set; }
 
-        public Sale Sale { get; set; }
-
         /// <summary>
         /// Gets the saleProduct's external product id.
         /// Must not be null or empty.

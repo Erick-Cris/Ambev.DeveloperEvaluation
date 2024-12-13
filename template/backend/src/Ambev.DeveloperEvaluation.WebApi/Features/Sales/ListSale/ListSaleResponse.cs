@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+﻿using Ambev.DeveloperEvaluation.Domain.DTOs.SaleProduct;
+using Ambev.DeveloperEvaluation.Domain.Enums;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSale;
 
@@ -7,6 +8,12 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSale;
 /// </summary>
 public class ListSaleResponse
 {
+    /// <summary>
+    /// Gets the sale's  id.
+    /// Must not be null or empty.
+    /// </summary>
+    public Guid Id { get; set; }
+
     /// <summary>
     /// Gets the sale's  customer id.
     /// Must not be null or empty.
@@ -61,13 +68,5 @@ public class ListSaleResponse
 
 }
 
-public class ListSaleProductResponse
-{
-    public Guid ProductExternalId { get; set; }
-    public string ProductName { get; set; }
-    public string ProductDescription { get; set; }
-    public uint Quantity { get; set; }
-    public decimal ProductPrice { get; set; }
-    public decimal Discount { get; set; }
-}
+
 

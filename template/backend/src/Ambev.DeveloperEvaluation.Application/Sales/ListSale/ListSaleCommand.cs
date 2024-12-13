@@ -14,6 +14,11 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale
     /// </summary>
     public record ListSaleCommand : IRequest<List<ListSaleResult>>
     {
+        /// <summary>
+        /// Gets the sale's   id.
+        /// Must not be null or empty.
+        /// </summary>
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Gets the sale's  customer id.

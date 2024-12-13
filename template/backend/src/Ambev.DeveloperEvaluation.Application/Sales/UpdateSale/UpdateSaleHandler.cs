@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
+using Ambev.DeveloperEvaluation.Domain.DTOs.SaleProduct;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
@@ -18,17 +19,20 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
     public class UpdateSaleHandler : IRequestHandler<UpdateSaleCommand, UpdateSaleResult>
     {
         private readonly ISaleRepository _saleRepository;
+        private readonly ISaleProductRepository _saleProductRepository;
         private readonly IMapper _mapper;
 
         /// <summary>
         /// Initializes a new instance of UpdateSaleHandler
         /// </summary>
         /// <param name="saleRepository">The sale repository</param>
+        /// <param name="saleProductRepository">The sale repository</param>
         /// <param name="mapper">The AutoMapper instance</param>
         /// <param name="validator">The validator for UpdateSaleCommand</param>
-        public UpdateSaleHandler(ISaleRepository saleRepository, IMapper mapper)
+        public UpdateSaleHandler(ISaleRepository saleRepository, ISaleProductRepository saleProductRepository, IMapper mapper)
         {
             _saleRepository = saleRepository;
+            _saleProductRepository = saleProductRepository;
             _mapper = mapper;
         }
 
@@ -46,11 +50,29 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors);
 
-
             var sale = _mapper.Map<Sale>(command);
 
-            var createdSale = await _saleRepository.UpdateAsync(sale, cancellationToken);
-            var result = _mapper.Map<UpdateSaleResult>(createdSale);
+            List<SaleProduct> saleProductListToReturn = new List<SaleProduct>();
+
+            foreach (var saleProductDto in command.SaleProducts)
+            {
+                saleProductDto.Discount = SalesBusinessRules.CalculateDiscount(saleProductDto.Quantity);
+                var saleProduct = _mapper.Map<SaleProduct>(saleProductDto);
+                saleProduct.SaleId = sale.Id;
+                
+                if (saleProduct.Id == Guid.Empty)
+                {
+                    saleProductListToReturn.Add( await _saleProductRepository.CreateAsync(saleProduct, cancellationToken));
+                }
+                else
+                {
+                    saleProductListToReturn.Add(await _saleProductRepository.UpdateAsync(saleProduct, cancellationToken));
+                }
+            }
+            sale.TotalAmount = SalesBusinessRules.CalculateTotalAmount(saleProductListToReturn);
+            var updatedSale = await _saleRepository.UpdateAsync(sale, cancellationToken);
+            var result = _mapper.Map<UpdateSaleResult>(updatedSale);
+            result.SaleProducts = _mapper.Map<List<UpdateSaleProductDto>>(saleProductListToReturn);
             return result;
         }
     }

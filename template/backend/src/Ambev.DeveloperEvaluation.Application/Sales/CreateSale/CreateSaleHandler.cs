@@ -19,6 +19,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
     public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleResult>
     {
         private readonly ISaleRepository _saleRepository;
+        private readonly ISaleProductRepository _saleProductRepository;
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -27,9 +28,10 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
         /// <param name="saleRepository">The sale repository</param>
         /// <param name="mapper">The AutoMapper instance</param>
         /// <param name="validator">The validator for CreateSaleCommand</param>
-        public CreateSaleHandler(ISaleRepository saleRepository, IMapper mapper)
+        public CreateSaleHandler(ISaleRepository saleRepository, ISaleProductRepository saleProductRepository, IMapper mapper)
         {
             _saleRepository = saleRepository;
+            _saleProductRepository = saleProductRepository;
             _mapper = mapper;
         }
 
@@ -47,6 +49,8 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors);
 
+
+            // Cria a Sale
             var sale = new Sale
             {
                 CustomerExternalId = command.CustomerExternalId,
@@ -55,24 +59,38 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
                 BranchExternalId = command.BranchExternalId,
                 BranchName = command.BranchName,
                 TotalAmount = command.TotalAmount,
-                Status = SaleStatus.Active,
-                SaleProducts = command.SaleProducts.Select(sp => new SaleProduct
-                {
-                    ProductExternalId = sp.ProductExternalId,
-                    ProductName = sp.ProductName,
-                    ProductDescription = sp.ProductDescription,
-                    Quantity = sp.Quantity,
-                    ProductPrice = sp.ProductPrice,
-                    Discount = sp.Discount
-                }).ToList()
+                Status = SaleStatus.Active
             };
 
-
-            //var sale = _mapper.Map<Sale>(command);
-
             var createdSale = await _saleRepository.CreateAsync(sale, cancellationToken);
+
+            // Cria os SaleProducts associados e aplica as regras de negócio
+            var saleProducts = new List<SaleProduct>();
+            foreach (var saleProductDto in command.SaleProducts)
+            {
+                var discount = SalesBusinessRules.CalculateDiscount(saleProductDto.Quantity);
+                var saleProduct = new SaleProduct
+                {
+                    SaleId = createdSale.Id,
+                    ProductExternalId = saleProductDto.ProductExternalId,
+                    ProductName = saleProductDto.ProductName,
+                    ProductDescription = saleProductDto.ProductDescription,
+                    Quantity = saleProductDto.Quantity,
+                    ProductPrice = saleProductDto.ProductPrice,
+                    Discount = discount
+                };
+
+                saleProducts.Add(saleProduct);
+                await _saleProductRepository.CreateAsync(saleProduct, cancellationToken);
+            }
+
+            // Calcula o valor total da venda
+            sale.TotalAmount = SalesBusinessRules.CalculateTotalAmount(saleProducts);
+            await _saleRepository.UpdateAsync(sale, cancellationToken);
+
             var result = _mapper.Map<CreateSaleResult>(createdSale);
             return result;
+
         }
     }
 }

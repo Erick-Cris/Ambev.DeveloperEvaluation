@@ -1,4 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+﻿using Ambev.DeveloperEvaluation.Application.SaleProducts.CreateSaleProduct;
+using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+using Ambev.DeveloperEvaluation.Domain.DTOs.SaleProduct;
 using Ambev.DeveloperEvaluation.Domain.Validation;
 using FluentValidation;
 using System;
@@ -34,6 +36,23 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
             RuleFor(sale => sale.BranchName)
                 .NotEmpty()
                 .MinimumLength(1).WithMessage("BranchName must be at least 3 characters long.");
+
+            //RuleForEach(sale => sale.SaleProducts).SetValidator(new CreateSaleProductCommandValidator());
+
+            RuleFor(sale => sale.SaleProducts)
+                .Must(HaveUniqueProductExternalIds).WithMessage("Each SaleProduct must have a unique ProductExternalId.")
+                .Must(NotExceedMaxQuantity).WithMessage("The quantity of a product type cannot exceed 20 units.");
+        }
+
+        private bool HaveUniqueProductExternalIds(List<CreateSaleProductDto> saleProducts)
+        {
+            var productExternalIds = saleProducts.Select(sp => sp.ProductExternalId).ToList();
+            return productExternalIds.Distinct().Count() == productExternalIds.Count();
+        }
+
+        private bool NotExceedMaxQuantity(List<CreateSaleProductDto> saleProducts)
+        {
+            return saleProducts.All(sp => sp.Quantity <= 20);
         }
     }
 }

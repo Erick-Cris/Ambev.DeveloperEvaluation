@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+﻿using Ambev.DeveloperEvaluation.Domain.DTOs.SaleProduct;
+using Ambev.DeveloperEvaluation.Domain.Enums;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.UpdateSale;
 
@@ -7,6 +8,12 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.UpdateSale;
 /// </summary>
 public class UpdateSaleResponse
 {
+    /// <summary>
+    /// Gets the sale's  id.
+    /// Must not be null or empty.
+    /// </summary>
+    public Guid Id { get; set; }
+
     /// <summary>
     /// Gets the sale's  customer id.
     /// Must not be null or empty.
@@ -48,5 +55,7 @@ public class UpdateSaleResponse
     /// Must not be null and could contain sale's status.
     /// </summary>
     public SaleStatus Status { get; set; }
+
+    public List<UpdateSaleProductDto> SaleProducts { get; set; }
 
 }

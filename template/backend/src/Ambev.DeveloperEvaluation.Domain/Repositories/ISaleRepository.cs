@@ -28,7 +28,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         /// <summary>
         /// Retrieves a list of sales based on the provided filters
         /// </summary>
-        /// <param name="name">The name of the sale</param>
+        /// <param name="saleId">The id of the sale</param>
         /// <param name="externalCustomerId">The external customer Id of the sale</param>
         /// <param name="customerName">The external customer's name of the sale</param>
         /// <param name="customerDocument">The external of the sale</param>
@@ -38,7 +38,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         /// <param name="totalAmount">The total amount of the sale</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>A list of sales that match the filters</returns>
-        Task<List<Sale>> ListAsync(Guid? externalCustomerId, string customerName, string customerDocument, Guid? externalBranchId, string branchName, SaleStatus? status, decimal? totalAmount, DateTime? createdAt, CancellationToken cancellationToken = default);
+        Task<List<Sale>> ListAsync(Guid? saleId, Guid? externalCustomerId, string customerName, string customerDocument, Guid? externalBranchId, string branchName, SaleStatus? status, decimal? totalAmount, DateTime? createdAt, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Updates an existing sale in the repository

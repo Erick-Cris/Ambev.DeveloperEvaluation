@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,5 +69,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale
         /// Gets the date and time of the last update to the sale's information.
         /// </summary>
         public DateTime? UpdatedAt { get; set; }
+
+        public List<SaleProduct> SaleProducts { get; set; }
     }
 }

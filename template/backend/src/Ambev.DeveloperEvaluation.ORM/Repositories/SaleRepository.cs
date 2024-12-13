@@ -58,6 +58,7 @@ public class SaleRepository : ISaleRepository
     /// <param name="createdAt">The creation date and time of the sale to retrieve</param>
     /// <returns>A list of sales that match the filters</returns>
     public async Task<List<Sale>> ListAsync(
+        Guid? saleId, 
         Guid? customerExternalId, 
         string customerName, 
         string customerDocument,
@@ -70,6 +71,10 @@ public class SaleRepository : ISaleRepository
         )
     {
         var query = _context.Sales.AsQueryable();
+        if (saleId.HasValue)
+        {
+            query = query.Where(p => p.Id == saleId);
+        }
 
         if (customerExternalId.HasValue)
         {

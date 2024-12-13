@@ -8,6 +8,12 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSale;
 public class ListSaleRequest
 {
     /// <summary>
+    /// Gets the sale's  id.
+    /// Must not be null or empty.
+    /// </summary>
+    public Guid? Id { get; set; }
+
+    /// <summary>
     /// Gets the sale's  customer id.
     /// Must not be null or empty.
     /// </summary>

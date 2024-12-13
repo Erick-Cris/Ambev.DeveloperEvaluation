@@ -150,13 +150,6 @@ public class SalesController : BaseController
         command.Id = id;
         var response = await _mediator.Send(command, cancellationToken);
 
-        //return Ok(new ApiResponseWithData<UpdateSaleResponse>
-        //{
-        //    Success = true,
-        //    Message = "Sale updated successfully",
-        //    Data = _mapper.Map<UpdateSaleResponse>(response)
-        //});
-
         return new JsonResult(new ApiResponseWithData<UpdateSaleResponse>
         {
             Success = true,
