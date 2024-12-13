@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -46,8 +47,28 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors);
 
+            var sale = new Sale
+            {
+                CustomerExternalId = command.CustomerExternalId,
+                CustomerName = command.CustomerName,
+                CustomerDocument = command.CustomerDocument,
+                BranchExternalId = command.BranchExternalId,
+                BranchName = command.BranchName,
+                TotalAmount = command.TotalAmount,
+                Status = SaleStatus.Active,
+                SaleProducts = command.SaleProducts.Select(sp => new SaleProduct
+                {
+                    ProductExternalId = sp.ProductExternalId,
+                    ProductName = sp.ProductName,
+                    ProductDescription = sp.ProductDescription,
+                    Quantity = sp.Quantity,
+                    ProductPrice = sp.ProductPrice,
+                    Discount = sp.Discount
+                }).ToList()
+            };
 
-            var sale = _mapper.Map<Sale>(command);
+
+            //var sale = _mapper.Map<Sale>(command);
 
             var createdSale = await _saleRepository.CreateAsync(sale, cancellationToken);
             var result = _mapper.Map<CreateSaleResult>(createdSale);

@@ -1,78 +1,75 @@
 ﻿using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Common;
-using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Validation;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities
 {
     /// <summary>
-    /// Represents a Sale in thebusiness rule.
+    /// Represents a SaleProduct in thebusiness rule.
     /// This entity follows domain-driven design principles and includes business rules validation.
     /// </summary>
-    public class Sale : BaseEntity
+    public class SaleProduct : BaseEntity
     {
+
         /// <summary>
-        /// Gets the sale's  customer id.
+        /// Gets the saleProduct's  sale id.
         /// Must not be null or empty.
         /// </summary>
-        public Guid CustomerExternalId { get; set; }
+        public Guid SaleId { get; set; }
+
+        public Sale Sale { get; set; }
 
         /// <summary>
-        /// Gets the sale's  customer name.
+        /// Gets the saleProduct's external product id.
         /// Must not be null or empty.
         /// </summary>
-        public string CustomerName { get; set; } = string.Empty;
+        public Guid ProductExternalId { get; set; }
 
         /// <summary>
-        /// Gets the sale's  customer document.
+        /// Gets the saleProduct's  product name.
         /// Must not be null or empty.
         /// </summary>
-        public string CustomerDocument { get; set; } = string.Empty;
+        public string ProductName { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets the sale's  branch id.
+        /// Gets the saleProduct's  product description.
         /// Must not be null or empty.
         /// </summary>
-        public Guid BranchExternalId { get; set; }
+        public string ProductDescription { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets the sale's  branch name.
+        /// Gets the saleProduct's  product price.
         /// Must not be null or empty.
         /// </summary>
-        public string BranchName { get; set; } = string.Empty;
+        public decimal ProductPrice { get; set; } = decimal.Zero;
 
         /// <summary>
-        /// Gets the sale's price.
-        /// Must not be null or empty and could contain sale's total amount.
+        /// Gets the saleProduct's  product discount %.
+        /// Must not be null or empty.
         /// </summary>
-        public decimal TotalAmount { get; set; } = decimal.Zero;
+        public decimal Discount { get; set; } = decimal.Zero;
 
         /// <summary>
-        /// Gets the sale's status.
-        /// Must not be null and could contain sale's status.
+        /// Gets the saleProduct's  prduct quantity.
+        /// Must not be null or empty.
         /// </summary>
-        public SaleStatus Status { get; set; }
+        public uint Quantity { get; set; } = default ;
 
         /// <summary>
-        /// Gets or sets the collection of SaleProducts associated with the sale.
-        /// </summary>
-        public ICollection<SaleProduct> SaleProducts { get; set; } = new List<SaleProduct>();
-
-        /// <summary>
-        /// Gets the date and time when the sale was created.
+        /// Gets the date and time when the saleProduct was created.
         /// </summary>
         public DateTime CreatedAt { get; set; }
 
         /// <summary>
-        /// Gets the date and time of the last update to the sale's information.
+        /// Gets the date and time of the last update to the saleProduct's information.
         /// </summary>
         public DateTime? UpdatedAt { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the Sale class.
+        /// Initializes a new instance of the SaleProduct class.
         /// </summary>
 
-        public Sale()
+        public SaleProduct()
         {
             CreatedAt = DateTime.UtcNow;
         }
@@ -87,14 +84,13 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// </returns>
         /// <remarks>
         /// <listheader>The validation includes checking:</listheader>
-        /// <list type="bullet">CustomerName value and length</list>
-        /// <list type="bullet">CustomerDocument format and length</list>
-        /// <list type="bullet">BranchName format and length</list>
+        /// <list type="bullet">ProductName value and length</list>
+        /// <list type="bullet">ProductDescription format and length</list>
         /// 
         /// </remarks>
         public ValidationResultDetail Validate()
         {
-            var validator = new SaleValidator();
+            var validator = new SaleProductValidator();
             var result = validator.Validate(this);
             return new ValidationResultDetail
             {

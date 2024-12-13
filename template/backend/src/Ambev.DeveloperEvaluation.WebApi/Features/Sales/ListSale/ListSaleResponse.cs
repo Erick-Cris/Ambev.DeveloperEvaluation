@@ -54,4 +54,20 @@ public class ListSaleResponse
     /// </summary>
     public DateTime CreatedAt { get; set; }
 
+    /// <summary>
+    /// Gets or sets the collection of SaleProducts associated with the sale.
+    /// </summary>
+    public List<ListSaleProductResponse> SaleProducts { get; set; } = new List<ListSaleProductResponse>();
+
 }
+
+public class ListSaleProductResponse
+{
+    public Guid ProductExternalId { get; set; }
+    public string ProductName { get; set; }
+    public string ProductDescription { get; set; }
+    public uint Quantity { get; set; }
+    public decimal ProductPrice { get; set; }
+    public decimal Discount { get; set; }
+}
+

@@ -1,12 +1,12 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.ListSale;
+﻿using Ambev.DeveloperEvaluation.Application.SaleProducts.ListSaleProduct;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale
@@ -17,19 +17,22 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale
     public class ListSaleHandler : IRequestHandler<ListSaleCommand, List<ListSaleResult>>
     {
         private readonly ISaleRepository _saleRepository;
+        private readonly ISaleProductRepository _saleProductRepository;
         private readonly IMapper _mapper;
 
         /// <summary>
         /// Initializes a new instance of ListSaleHandler
         /// </summary>
         /// <param name="saleRepository">The sale repository</param>
+        /// <param name="saleProductRepository">The sale repository</param>
         /// <param name="mapper">The AutoMapper instance</param>
-        /// <param name="validator">The validator for ListSaleCommand</param>
         public ListSaleHandler(
             ISaleRepository saleRepository,
+            ISaleProductRepository saleProductRepository,
             IMapper mapper)
         {
             _saleRepository = saleRepository;
+            _saleProductRepository = saleProductRepository;
             _mapper = mapper;
         }
 
@@ -57,10 +60,25 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.ListSale
                 request.TotalAmount,
                 request.CreatedAt,
                 cancellationToken);
-            //if (sale == null)
-            //    throw new KeyNotFoundException($"Sale with ID {request.Id} not found");
 
-            return _mapper.Map<List<ListSaleResult>>(sales);
+            var saleResults = _mapper.Map<List<ListSaleResult>>(sales);
+
+            foreach (var saleResult in saleResults)
+            {
+                var saleProducts = await _saleProductRepository.ListAsync(
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                cancellationToken);
+
+                saleProducts = saleProducts.Where(x => x.SaleId == saleResult.Id).ToList();
+                saleResult.SaleProducts = _mapper.Map<List<ListSaleProductResponse>>(saleProducts); ;
+            }
+
+            return saleResults;
         }
     }
 }

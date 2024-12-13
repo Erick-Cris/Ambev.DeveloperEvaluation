@@ -64,7 +64,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
         /// </summary>
         public SaleStatus Status { get; set; }
 
-
+        public List<CreateSaleProductDto> SaleProducts { get; set; }
 
         public ValidationResultDetail Validate()
         {
@@ -76,6 +76,18 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
                 Errors = result.Errors.Select(o => (ValidationErrorDetail)o)
             };
         }
+
+
+    }
+
+    public class CreateSaleProductDto
+    {
+        public Guid ProductExternalId { get; set; }
+        public string ProductName { get; set; }
+        public string ProductDescription { get; set; }
+        public uint Quantity { get; set; }
+        public decimal ProductPrice { get; set; }
+        public decimal Discount { get; set; }
     }
 }
 

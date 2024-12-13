@@ -9,6 +9,7 @@ namespace Ambev.DeveloperEvaluation.ORM;
 public class SalesContext : DbContext
 {
     public DbSet<Sale> Sales { get; set; }
+    public DbSet<SaleProduct> SaleProducts { get; set; }
 
     public SalesContext(DbContextOptions<SalesContext> options) : base(options)
     {
@@ -17,6 +18,14 @@ public class SalesContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+
+        modelBuilder.Entity<SaleProduct>()
+            .HasOne(sp => sp.Sale)
+            .WithMany(s => s.SaleProducts)
+            .HasForeignKey(sp => sp.SaleId);
+
+
         base.OnModelCreating(modelBuilder);
     }
 

@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+using Ambev.DeveloperEvaluation.Domain.Enums;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 
@@ -54,4 +55,17 @@ public class CreateSaleRequest
     /// </summary>
     public DateTime CreatedAt { get; set; }
 
+    public List<CreateSaleProductDto> SaleProducts { get; set; }
+
+
+}
+
+public class CreateSaleProductDto
+{
+    public Guid ProductExternalId { get; set; }
+    public string ProductName { get; set; }
+    public string ProductDescription { get; set; }
+    public uint Quantity { get; set; }
+    public decimal ProductPrice { get; set; }
+    public decimal Discount { get; set; }
 }
