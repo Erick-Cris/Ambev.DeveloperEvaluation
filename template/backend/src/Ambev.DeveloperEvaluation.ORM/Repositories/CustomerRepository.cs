@@ -62,6 +62,55 @@ public class CustomerRepository : ICustomerRepository
     }
 
     /// <summary>
+    /// Retrieves a list of customers based on the provided filters
+    /// </summary>
+    /// <param name="name">The name of the customer</param>
+    /// <param name="document">The description of the document</param>
+    /// <param name="phone">The phone of the customer</param>
+    /// <param name="email">The email of the customer</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>A list of customers that match the filters</returns>
+    public async Task<List<Customer>> ListAsync(string name, string document, string phone, string email, CancellationToken cancellationToken = default)
+    {
+        var query = _context.Customers.AsQueryable();
+
+        if (!string.IsNullOrEmpty(name))
+        {
+            query = query.Where(p => p.Name.ToLower().Trim().Contains(name.ToLower().Trim()));
+        }
+
+        if (!string.IsNullOrEmpty(document))
+        {
+            query = query.Where(p => p.Document.ToLower().Trim().Contains(document.ToLower().Trim()));
+        }
+
+        if (!string.IsNullOrEmpty(phone))
+        {
+            query = query.Where(p => p.Phone.ToLower().Trim().Contains(phone.ToLower().Trim()));
+        }
+
+        if (!string.IsNullOrEmpty(email))
+        {
+            query = query.Where(p => p.Email.ToLower().Trim().Contains(email.ToLower().Trim()));
+        }
+
+        return await query.ToListAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Updates an existing customer in the database
+    /// </summary>
+    /// <param name="customer">The customer to update</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The updated customer</returns>
+    public async Task<Customer> UpdateAsync(Customer customer, CancellationToken cancellationToken = default)
+    {
+        _context.Customers.Update(customer);
+        await _context.SaveChangesAsync(cancellationToken);
+        return customer;
+    }
+
+    /// <summary>
     /// Deletes a customer from the database
     /// </summary>
     /// <param name="id">The unique identifier of the customer to delete</param>

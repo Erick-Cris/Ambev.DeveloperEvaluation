@@ -37,6 +37,25 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         Task<Customer?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// Retrieves a list of customers based on the provided filters
+        /// </summary>
+        /// <param name="name">The name of the customer</param>
+        /// <param name="document">The document of the customer</param>
+        /// <param name="phone">The phone of the customer</param>
+        /// <param name="email">The email of the customer</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>A list of customers that match the filters</returns>
+        Task<List<Customer>> ListAsync(string name, string document, string phone, string email, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Updates an existing customer in the repository
+        /// </summary>
+        /// <param name="customer">The customer to update</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>The updated customer</returns>
+        Task<Customer> UpdateAsync(Customer customer, CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// Deletes a customer from the repository
         /// </summary>
         /// <param name="id">The unique identifier of the customer to delete</param>

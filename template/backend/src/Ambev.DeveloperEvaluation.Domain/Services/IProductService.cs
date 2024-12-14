@@ -8,6 +8,6 @@ namespace Ambev.DeveloperEvaluation.Domain.Services
 {
     public interface IProductService
     {
-        //Erick - Verificar necessidade de implementar isso depois
+        //Erick
     }
 }

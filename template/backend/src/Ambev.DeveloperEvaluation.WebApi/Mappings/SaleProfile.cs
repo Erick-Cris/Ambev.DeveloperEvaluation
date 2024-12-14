@@ -27,6 +27,6 @@ public class SaleProfile : Profile
         CreateMap<Sale, ListSaleResult>();
         CreateMap<SaleProduct, ListSaleProductResult>();
         CreateMap<ListSaleProductResult, ListSaleProductResponse>();
-        CreateMap<SaleProduct, ListSaleProductResponse>();//Erick - Resolver isso depois
+        CreateMap<SaleProduct, ListSaleProductResponse>();
     }
 }

@@ -8,6 +8,7 @@ namespace Ambev.DeveloperEvaluation.Domain.DTOs.SaleProduct
 {
     public class ListSaleProductResponse
     {
+        public Guid Id { get; set; }
         public Guid ProductExternalId { get; set; }
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }

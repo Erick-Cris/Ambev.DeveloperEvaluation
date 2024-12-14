@@ -1,9 +1,11 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Events;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
         /// <summary>
         /// Initializes a new instance of UpdateProductHandler
@@ -26,9 +29,10 @@ namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct
         /// <param name="productRepository">The product repository</param>
         /// <param name="mapper">The AutoMapper instance</param>
         /// <param name="validator">The validator for UpdateProductCommand</param>
-        public UpdateProductHandler(IProductRepository productRepository, IMapper mapper)
+        public UpdateProductHandler(IProductRepository productRepository, IMapper mapper, IMediator mediator)
         {
             _productRepository = productRepository;
+            _mediator = mediator;
             _mapper = mapper;
         }
 
@@ -49,8 +53,11 @@ namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct
 
             var product = _mapper.Map<Product>(command);
 
-            var createdProduct = await _productRepository.UpdateAsync(product, cancellationToken);
-            var result = _mapper.Map<UpdateProductResult>(createdProduct);
+            var updatedProduct = await _productRepository.UpdateAsync(product, cancellationToken);
+
+            await _mediator.Publish(new ProductUpdatedEvent(updatedProduct.Id, updatedProduct.Name, updatedProduct.Description), cancellationToken);
+
+            var result = _mapper.Map<UpdateProductResult>(updatedProduct);
             return result;
         }
     }

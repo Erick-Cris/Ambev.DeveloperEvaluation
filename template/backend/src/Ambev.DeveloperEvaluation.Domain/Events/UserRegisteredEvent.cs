@@ -1,14 +1,20 @@
-using Ambev.DeveloperEvaluation.Domain.Entities;
+using MediatR;
+using System;
 
 namespace Ambev.DeveloperEvaluation.Domain.Events
 {
-    public class UserRegisteredEvent
+    public class ProductUpdatedEvent : INotification
     {
-        public User User { get; }
+        public Guid ProductId { get; }
+        public string ProductName { get; }
+        public string ProductDescription { get; }
+        public decimal ProductPrice { get; }
 
-        public UserRegisteredEvent(User user)
+        public ProductUpdatedEvent(Guid productId, string productName, string productDescription)
         {
-            User = user;
+            ProductId = productId;
+            ProductName = productName;
+            ProductDescription = productDescription;
         }
     }
 }
