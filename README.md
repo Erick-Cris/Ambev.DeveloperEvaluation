@@ -1,3 +1,16 @@
+# Instruções e observações sobre o projeto
+- Para trabalhar com External Identities, foram criadas 2 bases de dados PostgreSQL (DeveloperEvaluation e Sales).
+- DeveloperEvaluation armazena entidades externas. Sales armazena entidades de venda.
+- Foi implementado um evento para atualizar a base Sales quando a entidade externa Customer for modificada. (Etapa opicional do teste)
+- Os parâmetros de alguns métodos da web api foram implementados com bodystring, como o swagger não aceita bem esse tipo de parâmetro é 
+recomendado testar a api por um client mais completo como o postman.
+- A authenticação JWT foi implementada em todos os clients, necessário cadastrar o primeiro usuário e fazer autenticação para pegar o token e usar nos endpoints do teste.
+Ou só tirar a tag authorize das controllers para facilitar na avaliação do teste.
+- Para gerar os bancos de dados através do EntityFrameworkCore use "Update-Database -Context DefaultContext" e "Update-Database -Context SalesContext" no
+ console de gerenciador de pacotes do visual studio.
+- Recomendado avaliar o sistema através do debug.
+
+
 # Developer Evaluation Project
 
 `READ CAREFULLY`
